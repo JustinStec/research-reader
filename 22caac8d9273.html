@@ -169,7 +169,7 @@ function renderList(items, label){
     const sim = r._sim!=null ? '<span class="tag sim">'+(Math.round(r._sim*100))+'% match</span>' : '';
     const pdf = r.has_pdf ? '<span class="tag pdf">PDF</span>' : '';
     return '<div class="row" data-k="'+esc(r.file_name)+'" onclick="openText(this.dataset.k)">'+
-      '<div class="title">'+esc(r.title||r.file_name)+'</div>'+
+      '<div class="title">'+ital(esc(r.title||r.file_name))+'</div>'+
       '<div class="sub">'+esc(r.author||'—')+yr+'</div>'+
       '<div class="tags"><span class="tag">'+PRETTY[r.tbl]+'</span>'+
         (r.category?'<span class="tag">'+esc(r.category)+'</span>':'')+pdf+sim+'</div>'+
@@ -233,7 +233,7 @@ async function openText(key){
   const hasPdf = !!rec.has_pdf;
   reader.innerHTML =
     '<div class="readhead">'+
-      '<h2>'+esc(rec.title||rec.file_name)+'</h2>'+
+      '<h2>'+ital(esc(rec.title||rec.file_name))+'</h2>'+
       '<div class="byline">'+esc(rec.author||'—')+(rec.year?' · '+rec.year:'')+' · '+PRETTY[rec.tbl]+'</div>'+
       '<div class="modetabs">'+
         '<button id="tabText" class="on" onclick="showMode(\'text\')">Text</button>'+
@@ -339,6 +339,8 @@ async function loadAnnotations(rec){
 /* ============================ helpers ============================ */
 function showCatalog(){ document.body.classList.remove('reading'); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+// render _underscored_ title spans as italics (input already escaped)
+function ital(s){ return String(s).replace(/_([^_]+)_/g,'<i>$1</i>'); }
 function cssEsc(s){ return String(s).replace(/["\\]/g,'\\$&'); }
 let toastTimer;
 function toast(msg){
